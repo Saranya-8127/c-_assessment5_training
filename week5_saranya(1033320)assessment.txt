@@ -1,0 +1,950 @@
+.NET Week 5 Coding Challenge - C#.NET Programming Assessment.
+
+problem 1: Implement an abstract class "Shape" with abstract methods for calculating area and
+perimeter. Create three subclasses (e.g., Circle, Rectangle, Triangle) that inherit from
+Shape and provide their own implementations for these methods. Demonstrate
+polymorphism by creating an array of Shapes and calculating the total area and
+perimeter.
+
+//program.cs
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        Circle circle = new Circle(4); //radius of circle
+        Rectangle rectangle = new Rectangle(4, 6); //length and width of rectange
+        Triangle triangle = new Triangle(3, 4, 5); //three sides of triangle
+        //calculating area and perimeter of circle
+        double circleArea = circle.CalculateArea(); 
+        double circlePerimeter = circle.CalculatePerimeter();
+        //calculating area and perimeter of rectangle
+        double rectangleArea = rectangle.CalculateArea();
+        double rectanglePerimeter = rectangle.CalculatePerimeter();
+        //calculating area and perimeter of triangle
+        double triangleArea = triangle.CalculateArea();
+        double trianglePerimeter = triangle.CalculatePerimeter();
+
+        //printing circle area and perimeter
+        Console.WriteLine("Circle:");
+        //Console.WriteLine("   Radius: " + circleArea);
+        Console.WriteLine("   Area: " + circleArea);
+        Console.WriteLine("   Perimeter: " + circlePerimeter);
+
+        //printing rectangle area and perimeter
+        Console.WriteLine("Rectangle:");
+        //Console.WriteLine("   Length: " + rectangle.length);
+        //Console.WriteLine("   Width: " + rectangle.width);
+        Console.WriteLine("   Area: " + rectangleArea);
+        Console.WriteLine("   Perimeter: " + rectanglePerimeter);
+
+        //printing triangle area and perimeter
+        Console.WriteLine("Triangle:");
+        //Console.WriteLine("   Side A: " + triangle.sideA);
+        //Console.WriteLine("   Side B: " + triangle.sideB);
+        //Console.WriteLine("   Side C: " + triangle.sideC);
+        Console.WriteLine("   Area: " + triangleArea);
+        Console.WriteLine("   Perimeter: " + trianglePerimeter);
+
+        //total area and perimeter (circle+ rectangle+ triangle
+        double totalArea = circleArea + rectangleArea + triangleArea;
+        double totalPerimeter = circlePerimeter + rectanglePerimeter + trianglePerimeter;
+        Console.WriteLine("Total area and perimeter of circle, triangle and rectangle are given below:");
+        Console.WriteLine("     Total Area: " + totalArea);
+        Console.WriteLine("     Total Perimeter: " + totalPerimeter);
+    }
+}
+
+//Shape.cs
+using System;
+
+public abstract class Shape
+{
+    public abstract double CalculateArea();
+    public abstract double CalculatePerimeter();
+}
+
+//Triangle.cs
+using System;
+
+public class Triangle : Shape //triangle is a derived class, inheriting from the base class shape
+{
+    public double A { get; } //side 1 of triangle
+    public double B { get; } //side 2 of triangle
+    public double C { get; } //side 3 of triangle
+
+    public Triangle(double a, double b, double c)
+    {
+        //constructor with side values.
+        A = a;
+        B = b;
+        C = c;
+    }
+
+    public override double CalculateArea() //override keyword is used to update the new value
+    {
+        // formula for the area of a triangle
+        double s = (A + B + C) / 2;
+        return Math.Sqrt(s * (s - A) * (s - B) * (s - C));
+    }
+
+    public override double CalculatePerimeter()
+    {
+        //calculating perimeter
+        return A + B + C;
+    }
+}
+
+//Rectangle.cs
+using System;
+
+public class Rectangle : Shape //rectangle is a derived class inheriting from shape class
+{
+    public double Length { get; } //getting length and width values 
+    public double Width { get; }
+
+    public Rectangle(double length, double width)
+    {
+        Length = length; //constructor with length and width values of rectangle
+        Width = width;
+    }
+
+    public override double CalculateArea()
+    {
+        //calculating area
+        return Length * Width;
+    }
+
+    public override double CalculatePerimeter()
+    {
+        //calculating perimeter
+        return 2 * (Length + Width);
+    }
+}
+
+//Circle.cs
+using System;
+public class Circle : Shape{
+    private double radius;
+    public Circle(double radius)
+    {
+        //constructor with radius value of the circle
+        this.radius = radius;
+    }
+    public override double CalculateArea()
+    {
+        //calculating perimeter
+        return Math.PI * radius * radius;
+    }
+    public override double CalculatePerimeter()
+    {
+        //calculating perimeter
+        return 2 * Math.PI * radius;
+    }
+}
+_______________________________________________________________________________________________________________________________________________________________________
+
+problem 2: Create a scenario where you need to model a "Person" class with properties like
+Name, Age, and Address. Implement multiple interfaces (e.g., IDriver, IStudent,
+IEmployee) to represent different roles that a person can have. Create a class that
+inherits from Person and implements multiple interfaces, showcasing multiple
+inheritance through interfaces.
+
+
+//program.cs
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        MultiRolePerson person = new MultiRolePerson("Saranya", 21, "Vizag");
+        // Set the LicenseNumber for person
+        person.LicenseNumber = "ADRO8935783D";
+
+        // Set the StudentID for person
+        person.StudentID = 1033320;
+
+        // Set the Salary for person
+        person.Salary = 50000.00m;
+
+        Console.WriteLine($"{person.Name}, {person.Age} years old, lives at {person.Address}");
+
+        person.Drive();
+        person.Study();
+        person.Work();
+    }
+}
+
+//Person.cs
+using System;
+
+public class Person
+{
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public string Address { get; set; }
+}
+
+//MultiRolePerson.cs
+using System;
+using System.Net;
+using System.Xml.Linq;
+
+public class MultiRolePerson : Person, IDriver, IStudent, IEmployee
+{
+    public MultiRolePerson(string name, int age, string address)
+    {
+        Name = name;
+        Age = age;
+        Address = address;
+    }
+
+    // Implement the IDriver interface
+    public void Drive()
+    {
+        Console.WriteLine($"{Name} is a driver with License Number: {LicenseNumber}");
+    }
+
+    public string LicenseNumber { get; set; }
+
+    // Implement the IStudent interface
+    public void Study()
+    {
+        Console.WriteLine($"{Name} is a student with Student ID: {StudentID}");
+    }
+
+    public int StudentID { get; set; }
+
+    // Implement the IEmployee interface
+    public void Work()
+    {
+        Console.WriteLine($"{Name} is an employee with a Salary of {Salary:C}");
+    }
+
+    public decimal Salary { get; set; }
+}
+
+//IStudent.cs
+public interface IStudent
+{
+    void Study();
+    int StudentID { get; set; } // Adding a StudentID property
+}
+
+//IDriver.cs
+public interface IDriver
+{
+    void Drive();
+    string LicenseNumber { get; set; } // Adding a LicenseNumber property
+}
+
+//IEmployee.cs
+public interface IEmployee
+{
+    void Work();
+    decimal Salary { get; set; } // Adding a Salary property
+}
+
+_______________________________________________________________________________________________________________________________________________________________________
+Problem 5:. Create a program for managing student records using file I/O streams and
+serialization. Define a class "Student" with properties like Name, ID, and GPA.
+Implement methods to serialize and deserialize student objects to/from a binary file.
+Allow users to add, view, update, and delete student records, maintaining data
+integrity using file I/O.
+
+
+//program.cs
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    static void Main()
+    {
+        StudentManager manager = new StudentManager();
+
+        while (true)
+        {
+            Console.WriteLine("Student Record Management System");
+            Console.WriteLine("1. Add Student");
+            Console.WriteLine("2. View Students");
+            Console.WriteLine("3. Update Student");
+            Console.WriteLine("4. Delete Student");
+            Console.WriteLine("5. Serialize Students");
+            Console.WriteLine("6. Deserialize Students");
+            Console.WriteLine("7. Exit");
+            Console.Write("Enter your choice: ");
+
+
+            if (int.TryParse(Console.ReadLine(), out int choice))
+            {
+                switch (choice)
+                {
+                    case 1:
+                        Console.Write("Name: ");
+                        string name = Console.ReadLine();
+                        Console.Write("ID: ");
+                        int id = int.Parse(Console.ReadLine());
+                        Console.Write("GPA: ");
+                        double gpa = double.Parse(Console.ReadLine());
+
+                        manager.AddStudent(new Student { Name = name, ID = id, GPA = gpa });
+                        break;
+
+                    case 2:
+                        List<Student> students = manager.GetStudents();
+                        Console.WriteLine("Student Records:");
+                        foreach (var student in students)
+                        {
+                            Console.WriteLine(student);
+                        }
+                        break;
+
+                    case 3:
+                        Console.Write("Enter ID to update: ");
+                        int updateId = int.Parse(Console.ReadLine());
+                        Student existingStudent = manager.GetStudentById(updateId);
+                        if (existingStudent != null)
+                        {
+                            Console.Write("New Name: ");
+                            string newName = Console.ReadLine();
+                            Console.Write("New GPA: ");
+                            double newGpa = double.Parse(Console.ReadLine());
+
+                            existingStudent.Name = newName;
+                            existingStudent.GPA = newGpa;
+                            manager.UpdateStudent(existingStudent);
+                        }
+                        break;
+
+                    case 4:
+                        Console.Write("Enter ID to delete: ");
+                        int deleteId = int.Parse(Console.ReadLine());
+                        manager.DeleteStudent(deleteId);
+                        break;
+
+                    case 5:
+                        Console.Write("Enter ID to search: ");
+                        int searchId = int.Parse(Console.ReadLine());
+                        Student foundStudent = manager.GetStudentById(searchId);
+                        if (foundStudent != null)
+                        {
+                            Console.WriteLine("Student Found:");
+                            Console.WriteLine(foundStudent);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Student not found.");
+                        }
+                        break;
+
+                    case 6:
+                        Environment.Exit(0);
+                        break;
+
+                    default:
+                        Console.WriteLine("Invalid choice. Please try again.");
+                        break;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Please enter a valid choice.");
+            }
+        }
+    }
+}
+
+
+//Student.cs
+public class Student
+{
+    public string Name { get; set; }
+    public int ID { get; set; }
+    public double GPA { get; set; }
+
+    public override string ToString()
+    {
+        return $"ID: {ID}, Name: {Name}, GPA: {GPA:F2}";
+    }
+}
+
+//StudentManager.cs
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
+
+public class StudentManager
+{
+    private List<Student> students;
+    private string dataFilePath = "students.dat";
+
+    public StudentManager()
+    {
+        students = LoadData();
+    }
+
+    public void AddStudent(Student student)
+    {
+        students.Add(student);
+        SaveData();
+    }
+
+    public List<Student> GetStudents()
+    {
+        return students;
+    }
+
+    public Student GetStudentById(int id)
+    {
+        return students.FirstOrDefault(s => s.ID == id);
+    }
+
+    public void UpdateStudent(Student updatedStudent)
+    {
+        Student existingStudent = students.FirstOrDefault(s => s.ID == updatedStudent.ID);
+        if (existingStudent != null)
+        {
+            existingStudent.Name = updatedStudent.Name;
+            existingStudent.GPA = updatedStudent.GPA;
+            SaveData();
+        }
+    }
+
+    public void DeleteStudent(int id)
+    {
+        students.RemoveAll(s => s.ID == id);
+        SaveData();
+    }
+
+    private List<Student> LoadData()
+    {
+        if (File.Exists(dataFilePath))
+        {
+            try
+            {
+                using (FileStream fs = new FileStream(dataFilePath, FileMode.Open))
+                {
+                    BinaryFormatter formatter = new BinaryFormatter();
+                    return (List<Student>)formatter.Deserialize(fs);
+                }
+            }
+            catch { }
+        }
+        return new List<Student>();
+    }
+
+    private void SaveData()
+    {
+        try
+        {
+            using (FileStream fs = new FileStream(dataFilePath, FileMode.Create))
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(fs, students);
+            }
+        }
+        catch { }
+    }
+    // Serialize method to save student data to a binary file
+    public void SerializeStudents()
+    {
+        try
+        {
+            using (FileStream fs = new FileStream(dataFilePath, FileMode.Create))
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(fs, students);
+                Console.WriteLine("Student data serialized to binary file.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error serializing data: " + ex.Message);
+        }
+    }
+    // Deserialize method to load student data from a binary file
+    public void DeserializeStudents()
+    {
+        if (File.Exists(dataFilePath))
+        {
+            try
+            {
+                using (FileStream fs = new FileStream(dataFilePath, FileMode.Open))
+                {
+                    BinaryFormatter formatter = new BinaryFormatter();
+                    students = (List<Student>)formatter.Deserialize(fs);
+                    Console.WriteLine("Student data deserialized from binary file.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error deserializing data: " + ex.Message);
+            }
+        }
+        else
+        {
+            Console.WriteLine("Data file does not exist for deserialization.");
+        }
+    }
+}
+
+_______________________________________________________________________________________________________________________________________________________________________
+
+
+
+problem 4:. Build a generic collection to manage a library's inventory of books. Create a class
+"Book" with properties like Title, Author, and ISBN. Implement a generic collection
+(e.g., List<Book>) to add, remove, search, and display books. Utilize generics to
+ensure type safety and efficient data management.
+
+
+
+//program.cs
+using System;
+
+
+
+class Program
+{
+    static void Main()
+    {
+        Library library = new Library();
+
+
+
+        while (true)
+        {
+            Console.WriteLine("Library Management System");
+            Console.WriteLine("1. Add Book");
+            Console.WriteLine("2. Remove Book");
+            Console.WriteLine("3. Update Book Information");
+            Console.WriteLine("4. Search Book by Title");
+            Console.WriteLine("5. Display All Books");
+            Console.WriteLine("6. Sort Books");
+            Console.WriteLine("7. Exit");
+            Console.Write("Enter your choice: ");
+
+
+
+            if (int.TryParse(Console.ReadLine(), out int choice))
+            {
+                switch (choice)
+                {
+                    case 1:
+                        Console.Write("Enter Book Title: ");
+                        string title = Console.ReadLine();
+                        Console.Write("Enter Author: ");
+                        string author = Console.ReadLine();
+                        Console.Write("Enter ISBN: ");
+                        string isbn = Console.ReadLine();
+
+
+
+                        Book newBook = new Book { Title = title, Author = author, ISBN = isbn };
+                        library.AddBook(newBook);
+                        break;
+
+
+
+                    case 2:
+                        Console.Write("Enter ISBN of the Book to Remove: ");
+                        string removeISBN = Console.ReadLine();
+                        library.RemoveBook(removeISBN);
+                        break;
+
+
+
+                    case 3:
+                        Console.Write("Enter ISBN of the Book to Update: ");
+                        string updateISBN = Console.ReadLine();
+                        Console.Write("Enter New Book Title: ");
+                        string newTitle = Console.ReadLine();
+                        Console.Write("Enter New Author: ");
+                        string newAuthor = Console.ReadLine();
+                        Console.Write("Enter New ISBN: ");
+                        string newISBN = Console.ReadLine();
+
+
+
+                        Book updatedBook = new Book { Title = newTitle, Author = newAuthor, ISBN = newISBN };
+                        library.UpdateBook(updateISBN, updatedBook);
+                        break;
+
+
+
+                    case 4:
+                        Console.Write("Enter Title to Search: ");
+                        string searchTitle = Console.ReadLine();
+                        library.SearchBookByTitle(searchTitle);
+                        break;
+
+
+
+                    case 5:
+                        library.DisplayAllBooks();
+                        break;
+
+
+
+                    case 6:
+                        Console.Write("Sort by (Title/Author): ");
+                        string sortBy = Console.ReadLine();
+                        Console.Write("Sort in ascending order (true/false): ");
+                        bool ascending = bool.Parse(Console.ReadLine());
+
+
+
+                        library.SortBooks(sortBy, ascending);
+                        break;
+
+
+
+                    case 7:
+                        Environment.Exit(0);
+                        break;
+
+
+
+                    default:
+                        Console.WriteLine("Invalid choice. Please try again.");
+                        break;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. Please enter a valid choice.");
+            }
+        }
+    }
+}
+
+
+
+
+
+//Library.cs
+// Library.cs
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+
+
+public class Library
+{
+    private List<Book> books;
+
+
+
+    public Library()
+    {
+        books = new List<Book>();
+    }
+
+
+
+    public void AddBook(Book book)
+    {
+        books.Add(book);
+        Console.WriteLine("Book added to the library.");
+    }
+
+
+
+    public void RemoveBook(string isbn)
+    {
+        Book bookToRemove = books.FirstOrDefault(b => b.ISBN == isbn);
+        if (bookToRemove != null)
+        {
+            books.Remove(bookToRemove);
+            Console.WriteLine("Book removed from the library.");
+        }
+        else
+        {
+            Console.WriteLine("Book not found in the library.");
+        }
+    }
+
+
+
+    public void UpdateBook(string isbn, Book updatedBook)
+    {
+        Book bookToUpdate = books.FirstOrDefault(b => b.ISBN == isbn);
+        if (bookToUpdate != null)
+        {
+            bookToUpdate.Title = updatedBook.Title;
+            bookToUpdate.Author = updatedBook.Author;
+            bookToUpdate.ISBN = updatedBook.ISBN;
+            Console.WriteLine("Book information updated.");
+        }
+        else
+        {
+            Console.WriteLine("Book not found in the library.");
+        }
+    }
+
+
+
+    public void SearchBookByTitle(string title)
+    {
+        List<Book> matchingBooks = books.Where(b => b.Title.Contains(title)).ToList();
+        if (matchingBooks.Count > 0)
+        {
+            Console.WriteLine("Matching Books:");
+            foreach (var book in matchingBooks)
+            {
+                Console.WriteLine(book);
+            }
+        }
+        else
+        {
+            Console.WriteLine("No matching books found.");
+        }
+    }
+
+
+
+    public void DisplayAllBooks()
+    {
+        if (books.Count > 0)
+        {
+            Console.WriteLine("Library Books:");
+            foreach (var book in books)
+            {
+                Console.WriteLine(book);
+            }
+        }
+        else
+        {
+            Console.WriteLine("The library is empty.");
+        }
+    }
+
+
+
+    public void SortBooks(string sortBy, bool ascending)
+    {
+        switch (sortBy.ToLower())
+        {
+            case "title":
+                books = ascending ? books.OrderBy(b => b.Title).ToList() : books.OrderByDescending(b => b.Title).ToList();
+                break;
+
+
+
+            case "author":
+                books = ascending ? books.OrderBy(b => b.Author).ToList() : books.OrderByDescending(b => b.Author).ToList();
+                break;
+
+
+
+            default:
+                Console.WriteLine("Invalid sort option.");
+                break;
+        }
+    }
+}
+
+
+
+//Book.cs
+public class Book
+{
+    public string Title { get; set; }
+    public string Author { get; set; }
+    public string ISBN { get; set; }
+
+
+
+    public override string ToString()
+    {
+        return $"Title: {Title}, Author: {Author}, ISBN: {ISBN}";
+    }
+}
+
+_________________________________________________________________________________________________________________________________________________________________________________
+
+problem 3:
+. Design a simple event management system using delegates and events. Create a
+class "EventManager" that allows users to subscribe to events and trigger them.
+Implement custom delegates and events to handle various event types (e.g.,
+Conference, Seminar, Workshop). Demonstrate how delegates and events can be
+used to notify subscribers when events occur
+
+using System;
+using System.Collections.Generic;
+
+// Custom delegate for event handlers
+public delegate void EventHandler(string message);
+
+// Class to represent event information
+public class EventInfo
+{
+    public string Name { get; set; }
+    public DateTime Date { get; set; }
+    public string Location { get; set; }
+}
+
+// Event classes representing different event types
+public class ConferenceEvent
+{
+    public event EventHandler OnConference;
+    public EventInfo ConferenceInfo { get; set; }
+
+    public void TriggerConference(string message)
+    {
+        OnConference?.Invoke(message);
+    }
+}
+
+public class SeminarEvent
+{
+    public event EventHandler OnSeminar;
+    public EventInfo SeminarInfo { get; set; }
+
+    public void TriggerSeminar(string message)
+    {
+        OnSeminar?.Invoke(message);
+    }
+}
+
+public class WorkshopEvent
+{
+    public event EventHandler OnWorkshop;
+    public EventInfo WorkshopInfo { get; set; }
+
+    public void TriggerWorkshop(string message)
+    {
+        OnWorkshop?.Invoke(message);
+    }
+}
+
+// EventManager class to manage and trigger events
+public class EventManager
+{
+    private Dictionary<string, EventHandler> conferenceSubscribers = new Dictionary<string, EventHandler>();
+    private Dictionary<string, EventHandler> seminarSubscribers = new Dictionary<string, EventHandler>();
+    private Dictionary<string, EventHandler> workshopSubscribers = new Dictionary<string, EventHandler>();
+
+    public void SubscribeToConference(string subscriberName, EventHandler handler)
+    {
+        conferenceSubscribers[subscriberName] = handler;
+    }
+
+    public void UnsubscribeFromConference(string subscriberName)
+    {
+        if (conferenceSubscribers.ContainsKey(subscriberName))
+        {
+            conferenceSubscribers.Remove(subscriberName);
+        }
+    }
+
+    public void SubscribeToSeminar(string subscriberName, EventHandler handler)
+    {
+        seminarSubscribers[subscriberName] = handler;
+    }
+
+    public void UnsubscribeFromSeminar(string subscriberName)
+    {
+        if (seminarSubscribers.ContainsKey(subscriberName))
+        {
+            seminarSubscribers.Remove(subscriberName);
+        }
+    }
+
+    public void SubscribeToWorkshop(string subscriberName, EventHandler handler)
+    {
+        workshopSubscribers[subscriberName] = handler;
+    }
+
+    public void UnsubscribeFromWorkshop(string subscriberName)
+    {
+        if (workshopSubscribers.ContainsKey(subscriberName))
+        {
+            workshopSubscribers.Remove(subscriberName);
+        }
+    }
+
+    public void TriggerConferenceEvent(string message, EventInfo eventInfo)
+    {
+        foreach (var subscriber in conferenceSubscribers)
+        {
+            subscriber.Value($"Conference: {message} - Date: {eventInfo.Date}, Location: {eventInfo.Location}");
+        }
+    }
+
+    public void TriggerSeminarEvent(string message, EventInfo eventInfo)
+    {
+        foreach (var subscriber in seminarSubscribers)
+        {
+            subscriber.Value($"Seminar: {message} - Date: {eventInfo.Date}, Location: {eventInfo.Location}");
+        }
+    }
+
+    public void TriggerWorkshopEvent(string message, EventInfo eventInfo)
+    {
+        foreach (var subscriber in workshopSubscribers)
+        {
+            subscriber.Value($"Workshop: {message} - Date: {eventInfo.Date}, Location: {eventInfo.Location}");
+        }
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        EventManager eventManager = new EventManager();
+
+        // Subscribe to ConferenceEvent
+        eventManager.SubscribeToConference("Subscriber 1", (message) =>
+        {
+            Console.WriteLine($"Subscriber 1 received: {message}");
+        });
+
+        // Subscribe to SeminarEvent
+        eventManager.SubscribeToSeminar("Subscriber 2", (message) =>
+        {
+            Console.WriteLine($"Subscriber 2 received: {message}");
+        });
+
+        // Subscribe to WorkshopEvent
+        eventManager.SubscribeToWorkshop("Subscriber 3", (message) =>
+        {
+            Console.WriteLine($"Subscriber 3 received: {message}");
+        });
+
+        // Event information
+        EventInfo conferenceInfo = new EventInfo
+        {
+            Name = "Annual Conference",
+            Date = DateTime.Now.AddDays(30),
+            Location = "City Convention Center",
+        };
+
+        EventInfo seminarInfo = new EventInfo
+        {
+            Name = "Tech Seminar",
+            Date = DateTime.Now.AddDays(45),
+            Location = "Seminar Hall A",
+        };
+
+        EventInfo workshopInfo = new EventInfo
+        {
+            Name = "Programming Workshop",
+            Date = DateTime.Now.AddDays(60),
+            Location = "Tech Institute",
+        };
+
+        // Trigger events with event information
+        eventManager.TriggerConferenceEvent("Registration is open!", conferenceInfo);
+        eventManager.TriggerSeminarEvent("Limited seats available", seminarInfo);
+        eventManager.TriggerWorkshopEvent("Hands-on coding session", workshopInfo);
+    }
+}
+
